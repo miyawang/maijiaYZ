@@ -11,6 +11,8 @@ Vue.use(InfiniteScroll)
 
 import Foot from '@/components/Foot.vue'
 
+import Swipe from '@/components/Swipe.vue'
+
 let app = new Vue({
   el: '#app',
   data: {
@@ -19,13 +21,16 @@ let app = new Vue({
     pageSize:6,
     loading:false,//可以加载
     allLoaded:false,//没有完全加载
+    bannerLists:null,
   },
   created() {
     this.getLists()
+    this.getBanner()
     
   },
   methods: {
-    getLists(){
+    
+    getLists(){ //获取商品推荐
       if(this.allLoaded){
         return 
       }
@@ -50,10 +55,16 @@ let app = new Vue({
         this.loading = false;//请求完成以后  可以再次请求
         this.pageNum++;
       })
+    },
+    getBanner(){
+      axios.get(url.banner).then(res=>{
+        this.bannerLists = res.data.lists
+      })
     }
   },
   components : {
     // Foot:Foot
-    Foot
+    Foot,
+    Swipe
   }
 })
