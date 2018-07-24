@@ -41,6 +41,7 @@ let app = new Vue({
       }).then(res => {
         let curLists = res.data.lists;
         // 判断所有数据是否加载完
+        
         if(curLists.length < this.pageSize){
           this.allLoaded = true;
         }
