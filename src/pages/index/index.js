@@ -3,7 +3,6 @@ import './index.css'
 import Vue from 'vue'
 import axios from 'axios'
 import url from 'js/api.js'
-// import { Vue } from '../../../node_modules/vue/types/vue';
 
 import { InfiniteScroll } from 'mint-ui';
 
@@ -64,7 +63,6 @@ let app = new Vue({
     }
   },
   components : {
-    // Foot:Foot
     Foot,
     Swipe
   }
