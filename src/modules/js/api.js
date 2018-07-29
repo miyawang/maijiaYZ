@@ -7,7 +7,11 @@ let url = {
   searchList:'/search/list',
   details:'/goods/details',
   deal:'/goods/deal',
-  addCart:'/cart/add',
+  cartAdd:'/cart/add',
+  cartLists:'/cart/list',
+  cartReduce:'/cart/reduce',
+  cartRemove:'/cart/remove',
+  cartMremove:'/cart/mremove',
 }
 //开发环境和直接打包上线的切换
 // 开发时 是ip接口 前后端可以分离

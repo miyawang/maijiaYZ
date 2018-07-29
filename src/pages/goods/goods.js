@@ -63,8 +63,9 @@ new Vue({
       this.showSku = true;
     },
     changeSkuNum(num) {
-      if(num < 0 && this.skuNum === 1) 
-        return this.skuNum += num 
+      if(num < 0 && this.skuNum === 1){
+        return
+      }else{this.skuNum += num } 
     },
     addCart(){
       axios.post(url.addCart,{
