@@ -5,11 +5,16 @@ let url = {
   subList:'/category/subList',
   rank:'/category/rank',
   searchList:'/search/list',
+  details:'/goods/details',
+  deal:'/goods/deal',
+  addCart:'/cart/add',
 }
 //开发环境和直接打包上线的切换
 // 开发时 是ip接口 前后端可以分离
 // 运行时 是后台的地址
 let host = 'http://rapapi.org/mockjsdata/35751' //开发环境  ip
+// let host = 'http://rapapi.org/mockjsdata/24170' //开发环境  ip
+
 
 // let host = ''  //真实环境
 
