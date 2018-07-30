@@ -6,6 +6,9 @@ import Vue from 'vue'
 import mixin from 'js/mixin.js'
 import axios from 'axios'
 import url from 'js/api.js'
+import Velocity from 'velocity-animate'
+import Cart from 'js/cartService.js'
+import fetch from 'js/fetch.js'
 
 new Vue({
   el: '.container',
@@ -135,24 +138,33 @@ new Vue({
       this.editingShopIndex = shop.editing ? shopIndex : -1
     },
     reduce(good) {
-      if (good.number === 1) {
-        return
-      } else {
-        axios.post(url.cartReduce, {
-          id: good.id,
-          number: 1
-        }).then(res => {
-          good.number--;
-        })
-      }
+      Cart.reduce(good.id).then(res=>{
+        good.number--
+      })
+
+
+      // if (good.number === 1) {
+      //   return
+      // } else {
+      //   axios.post(url.cartReduce, {
+      //     id: good.id,
+      //     number: 1
+      //   }).then(res => {
+      //     good.number--;
+      //   })
+      // }
     },
     add(good) {
-      axios.post(url.addCart, {
-        id: good.id,
-        number: 1
-      }).then(res => {
-        good.number++;
-      })
+     Cart.add(good.id).then(res=>{
+       good.number++
+     })
+     
+      // axios.post(url.addCart, {
+      //   id: good.id,
+      //   number: 1
+      // }).then(res => {
+      //   good.number++;
+      // })
     },
     remove(shop, shopIndex, good, goodIndex) {
       this.removePopup = true;
@@ -167,7 +179,7 @@ new Vue({
     removeConfirm() {
       if (this.removeMessage === '确定要删除该商品吗？') {
         let {shop,shopIndex,good,goodIndex} = this.removeData;
-        axios.post(url.cartRemove, {
+        fetch(url.cartRemove, {
           id: good.id,
         }).then(res => {
           shop.goodsList.splice(goodIndex, 1);
@@ -211,7 +223,25 @@ new Vue({
         shop.editing = false;
         shop.editingMessage = '编辑'
       })
-    }
+    },
+    start(e,good) {
+      good.startX = e.changedTouches[0].clientX;
+    },
+    end(e,shopIndex,good,goodIndex){
+      let endX = e.changedTouches[0].clientX;
+      // console.log(endX,good.startX);
+      let left = '0'; //在volicity里不识别0
+      if(good.startX - endX > 100){
+        left = '-60px'
+      }
+      if(endX > good.startX > 100){
+        left = '0px'
+      }
+      Velocity(this.$refs[`goods-${shopIndex}-${goodIndex}`],{
+        left
+      })
+      
+    },
 
   },
   mixins: [mixin],
