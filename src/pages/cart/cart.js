@@ -12,8 +12,11 @@ new Vue({
   data: {
     lists: null,
     total: 0,
-    editingShop:null,
-    editingShopIndex:-1,
+    editingShop: null,
+    editingShopIndex: -1,
+    removePopup: false,
+    removeData: null,
+    removeMessage:'',
   },
   computed: {
     allSelected: {
@@ -35,6 +38,22 @@ new Vue({
         })
       }
     },
+    allRemoveSelected: {
+      get() {
+        if (this.editingShop) {
+          return this.editingShop.removeChecked
+        }
+        return false
+      },
+      set(newVal) {
+        if (this.editingShop) {
+          this.editingShop.removeChecked = newVal;
+          this.editingShop.goodsList.forEach(good => {
+            good.removeChecked = newVal;
+          })
+        }
+      }
+    },
     selectLists() {
       if (this.lists && this.lists.length) {
         let arr = [];
@@ -53,7 +72,16 @@ new Vue({
       return []
     },
     removeLists() {
-
+      if (this.editingShop) {
+        let arr = [];
+        this.editingShop.goodsList.forEach(good => {
+          if (good.removeChecked) {
+            arr.push(good)
+          }
+        })
+        return arr;
+      }
+      return []
     }
   },
   created() {
@@ -77,20 +105,22 @@ new Vue({
       })
     },
     selectGood(shop, good) {
-      good.checked = !good.checked
-      // console.log(good.checked);
-      shop.checked = shop.goodsList.every(good => {
-        return good.checked
-      })
+      let attr = this.editingShop ? 'removeChecked' : 'checked';
+      good[attr] = !good[attr];
+      shop[attr] = shop.goodsList.every(good => {
+        return good[attr]
+      });
     },
     selectShop(shop) {
-      shop.checked = !shop.checked;
+      let attr = this.editingShop ? 'removeChecked' : 'checked';
+      shop[attr] = !shop[attr];
       shop.goodsList.forEach(good => {
-        good.checked = shop.checked
+        good[attr] = shop[attr]
       })
     },
     selectAll() {
-      this.allSelected = !this.allSelected
+      let attr = this.editingShop ? 'allRemoveSelected' : 'allSelected';
+      this[attr] = !this[attr]
     },
     edit(shop, shopIndex) {
       shop.editing = !shop.editing;
@@ -103,7 +133,86 @@ new Vue({
       })
       this.editingShop = shop.editing ? shop : null;
       this.editingShopIndex = shop.editing ? shopIndex : -1
+    },
+    reduce(good) {
+      if (good.number === 1) {
+        return
+      } else {
+        axios.post(url.cartReduce, {
+          id: good.id,
+          number: 1
+        }).then(res => {
+          good.number--;
+        })
+      }
+    },
+    add(good) {
+      axios.post(url.addCart, {
+        id: good.id,
+        number: 1
+      }).then(res => {
+        good.number++;
+      })
+    },
+    remove(shop, shopIndex, good, goodIndex) {
+      this.removePopup = true;
+      this.removeData = {shop,shopIndex,good, goodIndex};
+      this.removeMessage = '确定要删除该商品吗？'
+
+    },
+    removeList() {
+      this.removePopup = true;
+      this.removeMessage = `确定将所选$(this.removeLists.length)个商品删除吗？`
+    },
+    removeConfirm() {
+      if (this.removeMessage === '确定要删除该商品吗？') {
+        let {shop,shopIndex,good,goodIndex} = this.removeData;
+        axios.post(url.cartRemove, {
+          id: good.id,
+        }).then(res => {
+          shop.goodsList.splice(goodIndex, 1);
+          if (!shop.goodsList.length) {
+            this.lists.splice(shopIndex, 1);
+            this.removeShop();
+          }
+          this.removePopup = false;  
+        })
+      }else {
+        let ids = [];
+        this.removeLists.forEach(good => {
+          ids.push(good.id)
+        })
+        axios.post(url.cartMremove, {
+          ids
+        }).then(res => {
+          let arr = [];
+          this.editingShop.goodsList.forEach(good => {
+            let index = this.removeLists.findIndex(item => {
+              return item.id = good.id
+            })
+            if(index === -1){
+              arr.push(good)
+            }
+          })
+          if(arr.length) {
+            this.editingShop.goodsList = arr;
+          }else{
+            this.lists.splice(this.editingShopIndex,1);
+            this.removeShop();
+          }
+          this.removePopup = false;
+        })
+      }      
+    },
+    removeShop() {
+      this.editingShop = null;
+      this.editingShopIndex = -1;
+      this.lists.forEach(shop => {
+        shop.editing = false;
+        shop.editingMessage = '编辑'
+      })
     }
+
   },
   mixins: [mixin],
 })
