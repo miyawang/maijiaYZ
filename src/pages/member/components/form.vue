@@ -5,19 +5,19 @@
         <input class="js-id" name="id" type="hidden" value="">
         <div class="block-item" style="border-top:0;">
           <label>收货人</label>
-          <input type="text" placeholder="请输入姓名" name="user_name" value="" maxlength="20">
+          <input type="text" placeholder="请输入姓名" name="user_name" v-model="name" maxlength="20">
         </div>
         <div class="block-item">
           <label>联系电话</label>
-          <input type="tel" placeholder="联系电话" name="tel" value="" maxlength="11">
+          <input type="tel" placeholder="联系电话" name="tel" v-model="tel" maxlength="11">
         </div>
         <div class="block-item">
           <label>选择地区</label>
           <div class="select-group">
             <select class="js-province-selector">
-              <option value="-1">选择省份</option>
+             <option value="-1">选择省份</option>
               <option value="110000">北京市</option>
-              <option value="120000">天津市</option>
+               <!-- <option value="120000">天津市</option>
               <option value="130000">河北省</option>
               <option value="140000">山西省</option>
               <option value="150000">内蒙古自治区</option>
@@ -49,7 +49,7 @@
               <option value="650000">新疆维吾尔自治区</option>
               <option value="710000">台湾省</option>
               <option value="810000">香港特别行政区</option>
-              <option value="820000">澳门特别行政区</option>
+              <option value="820000">澳门特别行政区</option> -->
             </select>
             <select class="js-city-selector">
               <option value="-1">选择城市</option>
@@ -61,18 +61,23 @@
         </div>
         <div class="block-item">
           <label>详细地址</label>
-          <input type="text" placeholder="街道门牌信息" name="address_detail" value="" maxlength="100">
+          <input type="text" placeholder="街道门牌信息" name="address_detail" v-model="address" maxlength="100">
         </div>
       </div>
     </div>
     <div class="block section js-save block-control-btn">
       <div class="block-item c-blue center">保存</div>
     </div>
-    <div class="block section js-delete hide block-control-btn">
+    <div class="block section js-delete  block-control-btn" v-show="type==='edit'">
       <div class="block-item c-red center">删除</div>
     </div>
-    <div class="block stick-bottom-row center js-save-default hide">
+    <div class="block stick-bottom-row center js-save-default " v-show="type==='edit'">
       <button class="btn btn-standard js-save-default-btn">设为默认收货地址</button>
     </div>
   </div>
 </template>
+
+<script src="./form.js">
+  
+
+</script>

@@ -12,6 +12,11 @@ let url = {
   cartReduce:'/cart/reduce',
   cartRemove:'/cart/remove',
   cartMremove:'/cart/mremove',
+  addressLists:'/address/list',
+  addressAdd:'/address/add',
+  addressRemove:'/address/remove',
+  addressUpdate:'/address/update',
+  addressSetDefault:'/address/setDefault',
 }
 //开发环境和直接打包上线的切换
 // 开发时 是ip接口 前后端可以分离

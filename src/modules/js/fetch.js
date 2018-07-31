@@ -12,6 +12,8 @@ function fetch(url, data) {
         resolve(res)
       }
       reject(res)
+
+      // resolve(res)
     }).catch(error => {
       reject(error)
     })
