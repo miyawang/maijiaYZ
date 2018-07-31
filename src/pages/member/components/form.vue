@@ -15,16 +15,16 @@
           <label>选择地区</label>
           <div class="select-group">
             <select class="js-province-selector" v-model="provinceValue">
-             <option value="-1">选择省份</option>
-              <option :value="p.value" v-for="p in addressData.list" :key="p.index">{{p.label}}</option>
+             <option :value="-1" selected>选择省份</option>
+              <option :value="p.value" v-for="p in addressData.list" :key="p.value">{{p.label}}</option>
             </select>
             <select class="js-city-selector" v-model="cityValue">
-              <option value="-1">选择城市</option>
-              <option :value="c.value" v-for="c in cityList" :key="c.index">{{c.label}}</option>
+              <option :value="-1" selected>选择城市</option>
+              <option :value="c.value" v-for="c in cityList" :key="c.value">{{c.label}}</option>
             </select>
             <select class="js-county-selector" name="area_code" data-code="" v-model="districtValue">
-              <option value="-1">选择地区</option>
-              <option :value="d.value" v-for="d in districtList" :key="d.index">{{d.label}}</option>
+              <option :value="-1">选择地区</option>
+              <option :value="d.value" v-for="d in districtList" :key="d.value">{{d.label}}</option>
             </select>
           </div>
         </div>
@@ -47,6 +47,4 @@
 </template>
 
 <script src="./form.js">
-  
-
 </script>

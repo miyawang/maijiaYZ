@@ -42,7 +42,7 @@
         // this.$router.push({path:'/address/form'})
         this.$router.push({name:'form',query:{
           type:'edit',
-          instance:list,
+          ...list
         }})
       }
     }

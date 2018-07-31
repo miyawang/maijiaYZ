@@ -15,7 +15,7 @@ class Address {
   }
 
   static update(data) {
-    return fetch(url.addressUpdate.data)
+    return fetch(url.addressUpdate, data)
   }
 
   static setDefault(id) {
