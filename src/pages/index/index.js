@@ -18,8 +18,8 @@ let app = new Vue({
     lists: null,
     pageNum:1,
     pageSize:6,
-    loading:false,//可以加载
-    allLoaded:false,//没有完全加载
+    loading:false,
+    allLoaded:false,
     bannerLists:null,
   },
   created() {
@@ -29,17 +29,17 @@ let app = new Vue({
   },
   methods: {
     
-    getLists(){ //获取商品推荐
+    getLists(){ 
       if(this.allLoaded){
         return 
       }
-      this.loading = true; //已请求的不再请求
+      this.loading = true; 
       axios.post(url.hotLists, {
         pageNum: this.pageNum,
         pageSize:this.pageSize,
       }).then(res => {
         let curLists = res.data.lists;
-        // 判断所有数据是否加载完
+     
         
         if(curLists.length < this.pageSize){
           this.allLoaded = true;

@@ -1,5 +1,4 @@
 import './member.css'
-// 使用vue-router
 import Vue from 'vue'
 import Router from 'vue-router'
 Vue.use(Router)
@@ -37,7 +36,6 @@ let router = new Router({
   routes
 })
 
-// 根组件 挂载点 根组件注入
 new Vue({
   el: '#app',
   router,
